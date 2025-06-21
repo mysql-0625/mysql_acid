@@ -40,6 +40,16 @@ START TRANSACTION;
 UPDATE accounts SET name = null WHERE id = "hasan"; -- Akan gagal, harus konsisten dengan aturan yg dibuat di awal (name = not null)
 COMMIT;
 
+-- 3. ISOLATION
+-- Menjaga ketika transaksi bersamaan, database dapat mengelola seperti transaksi berurutan
+-- Menjaga kontrol terhadap konkurensi
+-- Simulasi dua user eksekusi transaksi yg sama berbarengan, maka salah satu user harus menunggu dan memperoleh data akhir setelah transaksi user lain selesai
+START TRANSACTION;
+SELECT * FROM accounts WHERE id IN ('hasan','sans') FOR UPDATE;
+UPDATE accounts SET balace = balace - 500000 where id = "hasan";
+UPDATE accounts SET balace = balace + 500000 where id = "sans";
+COMMIT;
+
 
 
 
