@@ -50,7 +50,16 @@ UPDATE accounts SET balace = balace - 500000 where id = "hasan";
 UPDATE accounts SET balace = balace + 500000 where id = "sans";
 COMMIT;
 
-
+-- 4. DURABILITY
+-- Menjamin ketika sekali data telah disimpan, maka data akan tetap disimpan bahkan dalam kasus kegagalan sistem (crash, padam, kebakaran dll)
+START TRANSACTION;
+SELECT * FROM accounts WHERE id IN ('hasan','sans') FOR UPDATE;
+UPDATE accounts SET balace = balace - 500000 where id = "hasan";
+-- Shutdown/Off MySQL
+-- Data harus konsisten seperti data sebelum transaction karena belum COMMIT
+-- Kecuali sampai COMMIT lalu shutdown mysql, maka data terbaru yang harus disimpan
+UPDATE accounts SET balace = balace + 500000 where id = "sans";
+COMMIT;
 
 
 
