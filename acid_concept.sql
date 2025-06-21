@@ -33,6 +33,13 @@ DELETE FROM accounts WHERE id = "hasan";
 DELETE FROM accounts WHERE id = "sans";
 ROLLBACK; -- Kedua data gagal dihapus disini karena dirollback
 
+-- 2. CONSISTENCY
+-- Transaksi hanya bisa mengubah data konidsi konsisten ke kondisi konsisten lainnya
+-- Menjaga data tetap konsisten, dan menjamin integritas antar relasi
+START TRANSACTION;
+UPDATE accounts SET name = null WHERE id = "hasan"; -- Akan gagal, harus konsisten dengan aturan yg dibuat di awal (name = not null)
+COMMIT;
+
 
 
 
